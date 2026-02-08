@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Info</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <main class="w-full max-w-md mx-auto p-6">
+    <div class="mt-7 bg-white rounded-xl shadow-lg border-2 border-indigo-300 p-6">
+      <h1 class="text-2xl font-bold text-center mb-4">User Info</h1>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <p class="text-red-500 text-center mb-2">{{ message }}</p>
+      {% endfor %}
+      {% endwith %}
+
+      <div class="text-center mb-4">
+        <p class="text-gray-700"><strong>Username:</strong> {{ session.username }}</p>
+        <p class="text-gray-700"><strong>User ID:</strong> {{ session.user_id }}</p>
+      </div>
+
+      <div class="text-center">
+        <a href="{{ url_for('logout') }}"
+           class="inline-block px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600">
+           Logout
+        </a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
