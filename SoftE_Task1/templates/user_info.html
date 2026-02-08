@@ -18,8 +18,8 @@
       {% endwith %}
 
       <div class="text-center mb-4">
-        <p class="text-gray-700"><strong>Username:</strong> {{ session.username }}</p>
-        <p class="text-gray-700"><strong>User ID:</strong> {{ session.user_id }}</p>
+        <p class="text-gray-700"><strong>Welcome, </strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
       </div>
 
       <div class="text-center">

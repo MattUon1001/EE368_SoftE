@@ -1,29 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<h2>Login</h2>
 
+<body class="bg-gray-100">
+  <main class="w-full max-w-md mx-auto p-6">
+    <div class="mt-7 bg-white rounded-xl shadow-lg border-2 border-indigo-300 p-6">
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% for category, message in messages %}
-<p style="color:red;">{{ message }}</p>
-{% endfor %}
-{% endwith %}
+      <h1 class="text-2xl font-bold text-center mb-4">Login</h1>
 
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <p class="text-red-500 text-center mb-2">{{ message }}</p>
+      {% endfor %}
+      {% endwith %}
 
-<form method="POST">
-<input type="text" name="username" placeholder="Username" required><br><br>
-<input type="password" name="password" placeholder="Password" required><br><br>
-<button type="submit">Login</button>
-</form>
+      <form method="POST">
+        <input type="text" name="username" placeholder="Username" required
+               class="w-full mb-2 p-2 border rounded">
 
+        <input type="password" name="password" placeholder="Password" required
+               class="w-full mb-4 p-2 border rounded">
 
-<p>
-<a href="/register">Register</a> |
-<a href="/forgot_pw">Forgot Password?</a>
-</p>
+        <button type="submit"
+                class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+          Login
+        </button>
+      </form>
+
+      <p class="mt-4 text-center">
+        <a href="{{ url_for('register') }}" class="text-blue-600 hover:underline">Register</a>
+        |
+        <a href="{{ url_for('forgot_password') }}" class="text-blue-600 hover:underline">Forgot Password?</a>
+      </p>
+
+    </div>
+  </main>
 </body>
 </html>
