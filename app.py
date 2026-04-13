@@ -1,3 +1,4 @@
+import re
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -8,7 +9,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 db = SQLAlchemy(app)
 
 
-# Database Setup for User Info [cite: 13-17]
+# Database Setup for User Info
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50))
@@ -25,12 +26,29 @@ with app.app_context():
 def register():
     if request.method == 'POST':
         email = request.form.get('email')
-        # TASK 7: Check if email exists [cite: 45]
+        password = request.form.get('password')
+
+        # TASK 7: Check if email exists
         if User.query.filter_by(email=email).first():
             flash('Existing users trying to register with the same email.')
             return redirect(url_for('register'))
 
-        hashed_pw = generate_password_hash(request.form.get('password'))
+        # --- Password Strength Validation ---
+        if len(password) < 8:
+            flash('Password must be at least 8 characters long.')
+            return redirect(url_for('register'))
+        if not re.search(r"[A-Z]", password):
+            flash('Password must contain at least one uppercase letter.')
+            return redirect(url_for('register'))
+        if not re.search(r"[a-z]", password):
+            flash('Password must contain at least one lowercase letter.')
+            return redirect(url_for('register'))
+        if not re.search(r"\d", password):
+            flash('Password must contain at least one number.')
+            return redirect(url_for('register'))
+        # ------------------------------------
+
+        hashed_pw = generate_password_hash(password)
         new_user = User(
             first_name=request.form.get('f_name'),
             last_name=request.form.get('l_name'),
@@ -47,7 +65,7 @@ def register():
 def login():
     if request.method == 'POST':
         user = User.query.filter_by(email=request.form.get('email')).first()
-        # TASK 7: Handle invalid credentials [cite: 44]
+        # TASK 7: Handle invalid credentials
         if user and check_password_hash(user.password, request.form.get('password')):
             session['user_id'] = user.id
             return redirect(url_for('user_info'))
@@ -55,10 +73,10 @@ def login():
     return render_template('login.html')
 
 
-# TASK 6: User Info Page [cite: 36-40]
+# TASK 6: User Info Page
 @app.route('/user_info')
 def user_info():
-    # Access Control: Redirect if not logged in [cite: 41-42]
+    # Access Control: Redirect if not logged in
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
@@ -66,7 +84,7 @@ def user_info():
     return render_template('user_info.html', user=user)
 
 
-# TASK 7: General system error handling [cite: 46]
+# TASK 7: General system error handling
 @app.errorhandler(500)
 def internal_error(error):
     return "A system error occurred. Please check your database connection.", 500
