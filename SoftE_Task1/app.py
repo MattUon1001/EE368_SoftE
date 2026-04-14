@@ -1,4 +1,5 @@
 import secrets
+import re
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -30,6 +31,14 @@ class User(db.Model, UserMixin):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+def is_password_strong(password):
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long."
+    if not any(char.isdigit() for char in password):
+        return False, "Password must contain at least one number."
+    if not any(char.isupper() for char in password):
+        return False, "Password must contain at least one uppercase letter."
+    return True, ""
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -62,6 +71,12 @@ def register():
 
         if User.query.filter_by(email=email).first():
             flash('Email already registered.', 'danger')
+            return redirect(url_for('register'))
+
+        # Password validation check
+        is_valid, message = is_password_strong(password)
+        if not is_valid:
+            flash(message, 'danger')
             return redirect(url_for('register'))
 
         hashed_pw = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -109,6 +124,12 @@ def forgot_password():
 
         if new_pw != confirm_pw:
             flash("Passwords do not match!", "danger")
+            return render_template('forgot_pw.html', show_reset=True, email=email)
+
+        # Password validation check for reset
+        is_valid, message = is_password_strong(new_pw)
+        if not is_valid:
+            flash(message, "danger")
             return render_template('forgot_pw.html', show_reset=True, email=email)
 
         user.password = bcrypt.generate_password_hash(new_pw).decode('utf-8')
