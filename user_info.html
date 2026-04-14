@@ -1,11 +1,81 @@
 <!DOCTYPE html>
-<html>
-<head><title>User Info</title></head>
-<body>
-    <h1>Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Full Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Info</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
 
-    <a href="{{ url_for('login') }}">Logout</a>
+  <div id="timeoutModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-xl shadow-2xl border-2 border-indigo-500 text-center max-w-sm">
+      <h2 class="text-xl font-bold mb-4">Are you still there?</h2>
+      <p class="mb-6 text-gray-600">Your session is about to expire. Click below to stay on this page.</p>
+
+      <button onclick="cancel_timeout()"
+              class="w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded hover:bg-indigo-700 transition">
+        I'm Still Here!
+      </button>
+    </div>
+  </div>
+
+  <main class="w-full max-w-md mx-auto p-6">
+    <div class="mt-7 bg-white rounded-xl shadow-lg border-2 border-indigo-300 p-6">
+      <h1 class="text-2xl font-bold text-center mb-4">User Info</h1>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <p class="text-red-500 text-center mb-2">{{ message }}</p>
+      {% endfor %}
+      {% endwith %}
+
+      <div class="text-center mb-4">
+        <p class="text-gray-700"><strong>Welcome, </strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+      </div>
+
+      <div class="text-center">
+        <a href="{{ url_for('logout') }}"
+           class="inline-block px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600">
+           Logout
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const warningTime = 10000;
+    const redirectTime = 8000;
+
+    let warningTimer = setTimeout(show_modal, warningTime);
+    let redirectTimer = setTimeout(do_redirect, redirectTime);
+
+    function show_modal() {
+      const modal = document.getElementById('timeoutModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+      } else {
+        console.error("Modal element not found!");
+      }
+    }
+
+    function do_redirect() {
+      window.location.href = "{{ url_for('login') }}";
+    }
+
+    function cancel_timeout() {
+      document.getElementById('timeoutModal').classList.add('hidden');
+
+      clearTimeout(warningTimer);
+      clearTimeout(redirectTimer);
+
+      warningTimer = setTimeout(show_modal, warningTime);
+      redirectTimer = setTimeout(do_redirect, redirectTime);
+
+      fetch("{{ url_for('user_info') }}");
+      console.log("Session Resumed");
+    }
+  </script>
 </body>
 </html>
