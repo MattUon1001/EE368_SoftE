@@ -33,6 +33,8 @@
       <div class="text-center mb-4">
         <p class="text-gray-700"><strong>Welcome, </strong> {{ user.username }}</p>
         <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>First Name:</strong> {{ user.fname }}</p>
+        <p><strong>Last Name:</strong> {{ user.lname }}</p>
       </div>
 
       <div class="text-center">
@@ -46,7 +48,7 @@
 
   <script>
     const warningTime = 10000;
-    const redirectTime = 8000;
+    const redirectTime =18000;
 
     let warningTimer = setTimeout(show_modal, warningTime);
     let redirectTimer = setTimeout(do_redirect, redirectTime);

@@ -1,24 +1,60 @@
 <!DOCTYPE html>
-<html>
-<head><title>Register</title></head>
-<body>
-    <h2>Create Account</h2>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-          <p style="color: red;">{{ message }}</p>
+<body class="bg-gray-100">
+  <div id="timeoutModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-xl shadow-2xl border-2 border-indigo-500 text-center max-w-sm">
+      <h2 class="text-xl font-bold mb-4">Are you still there?</h2>
+      <p class="mb-6 text-gray-600">Your session is about to expire. Click below to stay on this page.</p>
+
+      <button onclick="cancel_timeout()"
+              class="w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded hover:bg-indigo-700 transition">
+        I'm Still Here!
+      </button>
+    </div>
+  </div>
+
+  <main class="w-full max-w-md mx-auto p-6">
+    <div class="mt-7 bg-white rounded-xl shadow-lg border-2 border-indigo-300 p-6">
+      <h1 class="text-2xl font-bold text-center mb-4">Create Account</h1>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <p class="text-red-500 text-center mb-2">{{ message }}</p>
         {% endfor %}
-      {% endif %}
-    {% endwith %}
+      {% endwith %}
 
-    <form action="/register" method="POST">
-        <input type="text" name="f_name" placeholder="First Name" required><br>
-        <input type="text" name="l_name" placeholder="Last Name" required><br>
-        <input type="email" name="email" placeholder="Email" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <button type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="/login">Login here</a></p>
+      <form method="POST">
+<!--        <input type="text" name="username" placeholder="First & Last Name" required-->
+<!--               class="w-full mb-2 p-2 border rounded">-->
+        <input type="text" name="fname" placeholder="First Name" required
+               class="w-full mb-2 p-2 border rounded">
+
+        <input type="text" name="lname" placeholder="Last Name" required
+               class="w-full mb-2 p-2 border rounded">
+
+        <input type="email" name="email" placeholder="Email" required
+               class="w-full mb-2 p-2 border rounded">
+        <input type="password" name="password" placeholder="Password" required
+               class="w-full mb-4 p-2 border rounded">
+
+        <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+          Register
+        </button>
+      </form>
+
+      <p class="mt-4 text-center">
+        <a href="{{ url_for('login') }}" class="text-blue-600 hover:underline">
+          Back to Login
+        </a>
+      </p>
+    </div>
+  </main>
 </body>
 </html>
