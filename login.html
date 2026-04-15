@@ -27,20 +27,20 @@
                class="w-full mb-4 p-2 border rounded">
 
         <button type="submit"
-                class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+                class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">
           Login
         </button>
       </form>
 
       <div class="mt-4">
         <a href="{{ url_for('google_login') }}"
-           class="w-full flex items-center justify-center gap-2 border border-gray-300 bg-white text-gray-700 p-2 rounded hover:bg-gray-50 transition">
+           class="w-full flex items-center justify-center gap-2 border border-gray-300 bg-white text-gray-700 p-2 rounded hover:bg-gray-50 transition border-2">
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" class="w-5 h-5">
-          Sign in with Google
+          <span class="font-medium">Sign in with Google</span>
         </a>
       </div>
 
-      <p class="mt-4 text-center">
+      <p class="mt-6 text-center">
         <a href="{{ url_for('register') }}" class="text-blue-600 hover:underline">Register</a>
         |
         <a href="{{ url_for('forgot_password') }}" class="text-blue-600 hover:underline">Forgot Password?</a>
