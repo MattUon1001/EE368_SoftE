@@ -33,8 +33,15 @@
       <div class="text-center mb-4">
         <p class="text-gray-700"><strong>Welcome, </strong> {{ user.username }}</p>
         <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>First Name:</strong> {{ user.fname }}</p>
-        <p><strong>Last Name:</strong> {{ user.lname }}</p>
+       {% if user.lname == 'Google' or user.lname == 'GitHub' %}
+    <p><strong>User:</strong> {{ user.fname }}</p>
+    <p><strong>Provider:</strong> {{ user.lname }}</p>
+{% else %}
+    <p><strong>First Name:</strong> {{ user.fname }}</p>
+    <p><strong>Last Name:</strong> {{ user.lname }}</p>
+{% endif %}
+
+
       </div>
 
       <div class="text-center">
