@@ -14,7 +14,7 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 app = Flask(__name__)
 
-# ---------------- APP CONFIG ----------------
+#  APP CONFIG 
 
 # MySQL database connection
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://matt:Savythebird!1@127.0.0.1:3307/database_db" ## add in your sql server
@@ -26,7 +26,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'secretkey'
 
 
-# ---------------- GitHub SSO ----------------
+# GitHub SSO
 
 CLIENT_ID = "Ov23lidJKUGvzNAx3QDA"
 CLIENT_SECRET = "984b699a2b127fbd43dba78379bc0b524fdd3beb"
@@ -40,7 +40,7 @@ USER_URL = "https://api.github.com/user"
 REDIRECT_URI = "http://127.0.0.1:5000/github/callback"
 
 
-# ---------------- Google SSO ----------------
+# Google SSO 
 
 GOOGLE_CLIENT_ID = "414249642510-6g7gefars788r1n5b4tv7p5bf3q2v5v2.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET = "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"
